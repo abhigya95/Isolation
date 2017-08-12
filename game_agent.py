@@ -178,7 +178,7 @@ class MinimaxPlayer(IsolationPlayer):
         if depth <= 0:
             return self.score(game, self)
         v = math.inf
-        actions = self.get_legal_moves()
+        actions = game.get_legal_moves
         #If no actions available
         if not actions:
             return self.score(game, self)
@@ -195,9 +195,13 @@ class MinimaxPlayer(IsolationPlayer):
             raise SearchTimeout()
         #Check the depth
         if depth <= 0:
-            return self.score()
+            return self.score(game, self)
         v = math.inf
-        actions= self.get_legal_moves
+        actions= game.get_legal_moves
+
+        if not actions:
+            return self.score(game, self)
+
         for action in actions:
             new_branch = game.forecast_move(move)
             v = min(v, max_value(self,new_branch,depth-1))
@@ -246,9 +250,20 @@ class MinimaxPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        actions = game.get_legal_moves
+        best_action = (-1,-1)
+        if not actions:
+            return best_action
 
+        best_score = math.inf
+        for action in actions:
+            new_board = game.forecast_move(move)
+            temp_score = self.min_value(new_board,depth-1)
+            if temp_score > best_score:
+                best_score = temp_score
+                best_action = action
+
+        return best_action
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
