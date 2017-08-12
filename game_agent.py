@@ -3,7 +3,7 @@ test your agent's strength against a set of known agents using tournament.py
 and include the results in your report.
 """
 import random
-
+import math
 
 class SearchTimeout(Exception):
     """Subclass base exception for code clarity. """
@@ -169,6 +169,40 @@ class MinimaxPlayer(IsolationPlayer):
 
         # Return the best move from the last completed search iteration
         return best_move
+
+    """Max_value is a helper method to perform minimax """
+    def max_value(self, game, depth):
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+        #Check the depth
+        if depth <= 0:
+            return self.score(game, self)
+        v = math.inf
+        actions = self.get_legal_moves()
+        #If no actions available
+        if not actions:
+            return self.score(game, self)
+
+        for action in actions:
+            new_branch = game.forecast_move(move)
+            v = max(v, min_value(self,new_branch,depth-1))
+        return v
+
+
+    """Mini_max is a helper method to perform minimax"""
+    def min_value(self, game, depth):
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+        #Check the depth
+        if depth <= 0:
+            return self.score()
+        v = math.inf
+        actions= self.get_legal_moves
+        for action in actions:
+            new_branch = game.forecast_move(move)
+            v = min(v, max_value(self,new_branch,depth-1))
+        return v
+
 
     def minimax(self, game, depth):
         """Implement depth-limited minimax search algorithm as described in

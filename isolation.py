@@ -101,7 +101,7 @@ class Board(object):
 
     def forecast_move(self, move):
         """Return a deep copy of the current game with an input move applied to
-        advance the game one ply.
+        advance the game one play.
 
         Parameters
         ----------
